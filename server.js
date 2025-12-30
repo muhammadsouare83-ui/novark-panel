@@ -1,40 +1,35 @@
-const express = require("express");
-const TelegramBot = require("node-telegram-bot-api");
+const express = require("express")
+const app = express()
 
-const app = express();
-app.use(express.json());
-app.use(express.static("public"));
+const BOT_TOKEN = process.env.BOT_TOKEN
+const OWNER_ID = process.env.OWNER_ID
+const DEV_NAME = process.env.DEV_NAME || "NOVARK"
+const PORT = process.env.PORT || 3000
 
-const PORT = process.env.PORT || 3000;
-
-// ===== ROUTE TEST =====
 app.get("/", (req, res) => {
-  res.send("✅ NOVARK PANEL ACTIF");
-});
-
-let bot = null;
-
-// ===== DEMARRER BOT TELEGRAM =====
-app.post("/start-bot", (req, res) => {
-  const { token } = req.body;
-
-  if (!token) {
-    return res.status(400).json({ error: "TOKEN manquant" });
+  if (!BOT_TOKEN) {
+    return res.json({ error: "TOKEN manquant" })
   }
 
-  try {
-    bot = new TelegramBot(token, { polling: true });
+  res.send(`
+    <h1>🚀 NOVARK BOT PANEL</h1>
+    <p>✅ Serveur actif</p>
+    <p>👤 Dev : ${DEV_NAME}</p>
+    <button onclick="fetch('/start').then(r=>r.text()).then(alert)">
+      Démarrer le bot
+    </button>
+  `)
+})
 
-    bot.on("message", (msg) => {
-      bot.sendMessage(msg.chat.id, "🤖 NOVARK BOT actif !");
-    });
-
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: "Erreur bot Telegram" });
+app.get("/start", (req, res) => {
+  if (!BOT_TOKEN) {
+    return res.send("❌ BOT_TOKEN manquant")
   }
-});
+
+  res.send("✅ Bot démarré (token détecté)")
+})
 
 app.listen(PORT, () => {
-  console.log(`✅ Panel NOVARK lancé sur le port ${PORT}`);
-});
+  console.log("Panel lancé sur le port", PORT)
+  console.log("BOT_TOKEN =", BOT_TOKEN ? "OK" : "MANQUANT")
+})
