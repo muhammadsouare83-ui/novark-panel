@@ -1,86 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>NOVARK BOT PANEL</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding-top: 50px;
-    }
-    input {
-      padding: 10px;
-      width: 280px;
-      border-radius: 6px;
-      border: none;
-      margin-top: 10px;
-    }
-    button {
-      padding: 12px 20px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      background: #22c55e;
-      color: black;
-    }
-    .status {
-      margin-top: 20px;
-      font-size: 16px;
-    }
-  </style>
 </head>
 <body>
-
   <h1>🚀 NOVARK BOT PANEL</h1>
-  <p>Contrôle du bot Telegram</p>
 
   <button onclick="checkServer()">Vérifier le serveur</button>
-
-  <div class="status" id="serverStatus"></div>
-
-  <hr style="margin:30px;">
-
-  <h2>🤖 Démarrer Bot Telegram</h2>
-
-  <input id="token" placeholder="Colle ici le TOKEN Telegram">
-
-  <br>
-
   <button onclick="startBot()">Démarrer le bot</button>
 
-  <div class="status" id="botStatus"></div>
+  <pre id="output"></pre>
 
   <script>
     async function checkServer() {
-      const res = await fetch("/api/status");
+      const res = await fetch("/health");
       const data = await res.json();
-      document.getElementById("serverStatus").innerText =
-        "✅ " + data.message;
+      document.getElementById("output").textContent =
+        JSON.stringify(data, null, 2);
     }
 
     async function startBot() {
-      const token = document.getElementById("token").value;
-
-      if (!token) {
-        alert("❌ Colle d'abord le token Telegram");
-        return;
-      }
-
-      const res = await fetch("/api/start-telegram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-      });
-
+      const res = await fetch("/start-bot", { method: "POST" });
       const data = await res.json();
-      document.getElementById("botStatus").innerText = data.message;
+      document.getElementById("output").textContent =
+        JSON.stringify(data, null, 2);
     }
   </script>
-
 </body>
 </html>
