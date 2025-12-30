@@ -1,0 +1,16 @@
+{
+  "name": "novark-bot-panel",
+  "version": "1.0.0",
+  "description": "Panel professionnel NOVARK pour bots Telegram et WhatsApp",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "𝚳𝚪|𝚴𝚯𝛁𝚫𝚪𝐊 𝚯𝚪 𝛁𝚫𝚪𝚴𝚯𝚾•𝚩𝚫𝚴𝚴𝚵𝐃|𝐃𝚵𝛁•𝚻𝚵𝐂𝚮",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
